@@ -2,48 +2,92 @@ const questions = [
     {
         question: "What color is the sun?",
         answer: ["Blue","Yellow","Green","Red"],
-        correct: 1
+        correct: 1,
+        number: 1,
     },
     {
         question:"How many legs does a spider have?",
         answer:["Six","Ten","Eight","Four"],
-        correct: 2
+        correct: 2,
+        number: 2
     },
     {
         question:"Which of these is a fruit?",
         answer: ["carrot","potato","broccoli","banana"],
-        correct: 3
+        correct: 3,
+        number: 3
     },
     {
         question:"Are you an idiot?",
         answer: ["Yes","No","Maybe","IDK"],
-        correct: 0
+        correct: 0,
+        number: 4
     }
 ];
 
+let currentQuestionIndex = 0;
+const body = document.getElementById('body');
+let answered = false;
 
+
+function nextQuestion() {
+    answered = false;
+    currentQuestionIndex++; 
+    let result = `
+    <div class="end-box">
+        <div class="end-title">The End</div>
+        <div class="end-result">Congratulatios! You are an idiot :(</div>
+    </div>
+    `;
+    if(currentQuestionIndex>3)
+    {
+        body.innerHTML=result;
+    }else
+    {
+        showQuiz()
+    }
+}
 
 
 function showQuiz(){
-    let welcomeBox = document.getElementById('welcome-box'); 
-    let body = document.getElementById('body');
+    const currentQuestion = questions[currentQuestionIndex];
+    
     let quizBox = `
         <div class="quiz-box">
         <div class="quiz-title">The Idiot Test</div>
-        <div class="quiz-question">jakies tam pytanie co sadzimy? xdjakies tam pytanie co sadzimy? xdjakies tam pytanie co sadzimy? xd</div>
+        <div class="quiz-question">`+currentQuestion.question+`</div>
         <div class="quiz-all-answers">
-            <div class="quiz-answer">tak</div>
-            <div class="quiz-answer">nie</div>
-            <div class="quiz-answer">w sumie to nie wiem</div>
-            <div class="quiz-answer">mozliwe</div>
+            <div class="quiz-answer" class="quiz-answer" onclick="checkAnswer(0)">`+currentQuestion.answer[0]+`</div>
+            <div class="quiz-answer" class="quiz-answer" onclick="checkAnswer(1)">`+currentQuestion.answer[1]+`</div>
+            <div class="quiz-answer" class="quiz-answer" onclick="checkAnswer(2)">`+currentQuestion.answer[2]+`</div>
+            <div class="quiz-answer" class="quiz-answer" onclick="checkAnswer(3)">`+currentQuestion.answer[3]+`</div>
             <div class="quiz-box-button">
-                <button class="quiz-button">NEXT</button>
+                <button class="quiz-button" onclick="nextQuestion()">NEXT</button>
             </div>
-            <div class="quiz-number">1 of 4 questions</div>
+            <div class="quiz-number">`+currentQuestion.number+` of 4 questions</div>
         </div>
     </div>
     `;
-    welcomeBox.style.display="none";
     body.innerHTML=quizBox;
 }
+    
+function checkAnswer(selectedIndex){
+    if (answered) return;
+    answered = true;
+
+    const currentQuestion = questions[currentQuestionIndex];
+    if(selectedIndex===currentQuestion.correct)
+    {
+        alert("dobrze")
+    }else{
+        alert("zle")
+    }
+
+    let quizAnswers = document.getElementsByClassName('quiz-answer');
+    for (let i = 0; i < quizAnswers.length; i++) {
+    quizAnswers[i].style.pointerEvents = "none";
+}
+}
+
+
 
